@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  </head>
+  <body>
+    <div
+      class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+    >
+      <div class="max-w-xl w-full space-y-8">
+        <div>
+          <h1 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            {{.video.Title}} GoVOD
+          </h1>
+          <h2
+            class="mt-6 text-center text-2xl tracking-tight font-bold text-gray-900"
+          >
+          site de démonstration d'un service de streaming video utilisant le protocole HLS
+          </h2>
+          <p class="hidden mt-2 text-center text-sm text-blue-600">
+            Attention. Il s'agit d'un site de démonstration, toutes les données sont supprimées réguliairement
+          </p>
+        </div>
+        
+      </div>
+    </div>
+    {{ if .video }}
+    <div class="flex flex-col items-center justify-center">
+      <video
+        id="video"
+        class="w-full"
+        controls
+        autoplay
+        src="/videos/index.m3u8"
+      ></video>
+      
+      <script>
+        // from hls.js demo
+        var video = document.getElementById('video');
+        if(Hls.isSupported()) {
+          var hls = new Hls();
+          hls.loadSource({{.video.URL}});
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED,function() {
+            video.play();
+        });
+       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = {{.video.URL}};
+          video.addEventListener('loadedmetadata',function() {
+            video.play();
+          });
+        }
+      </script>
+      
+      <p class="text-center text-2xl tracking-tight font-bold text-gray-900">
+        {{.video.Title}}
+      </p>
+    </div>
+    {{ else }}
+      <div class="text-center">
+        <p class="block text-2xl text-center"> 
+          Video introuvable
+        </p>
+        <a class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="/">Retour à l'accueil</a>
+      </div>
+    {{end}}
+
+  </body>
+</html>
+
