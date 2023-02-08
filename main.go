@@ -15,7 +15,7 @@ type video struct {
 	Duration   string `json:"preview_url"`
 }
 
-var baseURI = "http://localhost:8081"
+var baseURI = "https://govod.fly.dev"
 
 var videos = []video{
 	{
@@ -88,7 +88,7 @@ func main() {
 		})
 	})
 
-	router.Run("localhost:8081")
+	router.Run(":8080")
 }
 
 // API endpoint
